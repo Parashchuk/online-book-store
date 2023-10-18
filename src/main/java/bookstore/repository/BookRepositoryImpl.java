@@ -1,7 +1,6 @@
 package bookstore.repository;
 
 import bookstore.entity.Book;
-import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,8 @@ public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory factory;
 
     @Autowired
-    public BookRepositoryImpl(EntityManagerFactory factory) {
-        this.factory = factory.unwrap(SessionFactory.class);
+    public BookRepositoryImpl(SessionFactory factory) {
+        this.factory = factory;
     }
 
     @Override
