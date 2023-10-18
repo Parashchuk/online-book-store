@@ -8,9 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookServiceImpl implements BookService {
-    private BookRepositoryImpl bookRepository;
+    private final BookRepositoryImpl bookRepository;
 
-    @Autowired
     public BookServiceImpl(BookRepositoryImpl bookRepository) {
         this.bookRepository = bookRepository;
     }
