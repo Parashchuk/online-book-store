@@ -3,15 +3,13 @@ package bookstore.service;
 import bookstore.entity.Book;
 import bookstore.repository.BookRepositoryImpl;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepositoryImpl bookRepository;
-
-    public BookServiceImpl(BookRepositoryImpl bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     @Override
     public Book save(Book book) {

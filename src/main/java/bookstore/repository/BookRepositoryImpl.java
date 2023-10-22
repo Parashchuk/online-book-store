@@ -2,16 +2,14 @@ package bookstore.repository;
 
 import bookstore.entity.Book;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory factory;
-
-    public BookRepositoryImpl(SessionFactory factory) {
-        this.factory = factory;
-    }
 
     @Override
     public Book save(Book book) {
