@@ -1,6 +1,7 @@
 package bookstore.repository;
 
 import bookstore.entity.Book;
+import bookstore.exception.DataProcessingException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
@@ -16,9 +17,8 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             factory.inTransaction(e -> e.persist(book));
         } catch (Exception e) {
-            throw new RuntimeException("Save operation was unsuccessful: ", e);
+            throw new DataProcessingException("Can't create a book, ", e);
         }
-
         return book;
     }
 
@@ -28,8 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
             return factory.fromSession(e -> e.createQuery("from Book", Book.class)
                     .getResultList());
         } catch (Exception e) {
-            throw new RuntimeException("Save operation was unsuccessful: ", e);
+            throw new RuntimeException("Can't find all books from DB, ", e);
         }
-
     }
 }
