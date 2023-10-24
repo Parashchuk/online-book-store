@@ -21,7 +21,6 @@ public class BookRepositoryImpl implements BookRepository {
         } catch (Exception e) {
             throw new DataProcessingException("Save operation was unsuccessful: ", e);
         }
-
         return book;
     }
 

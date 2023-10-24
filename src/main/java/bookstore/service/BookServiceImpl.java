@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
     private final BookRepositoryImpl bookRepository;
     private final BookMapper bookMapper;
-
+  
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
         return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
     }
-
+  
     @Override
     public BookDto findBookById(Long id) {
         return bookRepository.findBookById(id)
