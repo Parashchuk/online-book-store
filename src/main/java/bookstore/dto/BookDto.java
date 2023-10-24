@@ -2,7 +2,7 @@ package bookstore.dto;
 
 import java.math.BigDecimal;
 
-public record BookDto (long id,
+public record BookDto(long id,
                        String title,
                        String author,
                        String isbn,
