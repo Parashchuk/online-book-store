@@ -2,7 +2,6 @@ package bookstore.service;
 
 import bookstore.dto.BookDto;
 import bookstore.dto.CreateBookRequestDto;
-import bookstore.entity.Book;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepositoryImpl;
 import jakarta.persistence.EntityNotFoundException;
