@@ -2,6 +2,7 @@ package bookstore.repository;
 
 import bookstore.entity.Book;
 import bookstore.exception.DataProcessingException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             return Optional.ofNullable(factory.fromSession(e -> e.find(Book.class, id)));
         } catch (Exception e) {
-            throw new DataProcessingException("Search operation was unsuccessful: ", e);
+            throw new EntityNotFoundException("Can't find book by id: " + id, e);
         }
     }
 
@@ -39,7 +40,7 @@ public class BookRepositoryImpl implements BookRepository {
             return factory.fromSession(e -> e.createQuery("from Book", Book.class)
                     .getResultList());
         } catch (Exception e) {
-            throw new DataProcessingException("Search all operation was unsuccessful: ", e);
+            throw new EntityNotFoundException("Search all books operation was unsuccessful: ", e);
         }
     }
 }
