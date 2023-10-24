@@ -9,8 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepositoryImpl bookRepository;
@@ -24,11 +25,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto findBookById(Long id) {
-        Book book = bookRepository.findBookById(id).orElseThrow(
-                () -> new EntityNotFoundException("Book was not found with id: " + id)
+        return bookRepository.findBookById(id)
+                .map(bookMapper::toDto)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Book was not found with id: " + id)
         );
-
-        return bookMapper.toDto(book);
     }
 
     @Override

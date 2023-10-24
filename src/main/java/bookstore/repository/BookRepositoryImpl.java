@@ -1,6 +1,7 @@
 package bookstore.repository;
 
 import bookstore.entity.Book;
+import bookstore.exception.DataProcessingException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,18 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             factory.inTransaction(e -> e.persist(book));
         } catch (Exception e) {
-            throw new RuntimeException("Save operation was unsuccessful: ", e);
+            throw new DataProcessingException("Save operation was unsuccessful: ", e);
         }
 
         return book;
     }
 
+    @Override
     public Optional<Book> findBookById(Long id) {
         try {
             return Optional.ofNullable(factory.fromSession(e -> e.find(Book.class, id)));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Search operation was unsuccessful: " ,e);
         }
     }
 
@@ -37,8 +39,7 @@ public class BookRepositoryImpl implements BookRepository {
             return factory.fromSession(e -> e.createQuery("from Book", Book.class)
                     .getResultList());
         } catch (Exception e) {
-            throw new RuntimeException("Save operation was unsuccessful: ", e);
+            throw new DataProcessingException("Search all operation was unsuccessful: ", e);
         }
-
     }
 }
