@@ -8,7 +8,6 @@ import bookstore.repository.BookRepositoryImpl;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service

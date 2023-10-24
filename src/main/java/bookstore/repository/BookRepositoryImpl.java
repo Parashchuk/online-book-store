@@ -29,7 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             return Optional.ofNullable(factory.fromSession(e -> e.find(Book.class, id)));
         } catch (Exception e) {
-            throw new DataProcessingException("Search operation was unsuccessful: " ,e);
+            throw new DataProcessingException("Search operation was unsuccessful: ", e);
         }
     }
 
