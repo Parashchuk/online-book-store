@@ -5,6 +5,7 @@ import bookstore.dto.CreateBookRequestDto;
 import bookstore.entity.Book;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
@@ -18,4 +19,6 @@ public interface BookMapper {
     BookDto toDto(Book book);
 
     Book toModel(CreateBookRequestDto bookRequestDto);
+
+    void updateBook(CreateBookRequestDto dto, @MappingTarget Book book);
 }

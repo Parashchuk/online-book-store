@@ -23,11 +23,13 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAll() {
         return bookService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
@@ -39,13 +41,14 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public BookDto updateBookById(@PathVariable Long id, @RequestBody CreateBookRequestDto book) {
-        return bookService.updateBookById(id, book);
+        return bookService.updateById(id, book);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBookById(@PathVariable Long id) {
-        bookService.deleteBookById(id);
+        bookService.deleteById(id);
     }
 }
