@@ -2,8 +2,9 @@ package bookstore.service;
 
 import bookstore.dto.BookDto;
 import bookstore.dto.CreateBookRequestDto;
+import bookstore.entity.Book;
 import bookstore.mapper.BookMapper;
-import bookstore.repository.BookRepositoryImpl;
+import bookstore.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,21 +13,21 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    private final BookRepositoryImpl bookRepository;
+    private final BookRepository bookRepository;
     private final BookMapper bookMapper;
-  
+
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
         return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
     }
-  
+
     @Override
-    public BookDto findBookById(Long id) {
-        return bookRepository.findBookById(id)
+    public BookDto findById(Long id) {
+        return bookRepository.findById(id)
                 .map(bookMapper::toDto)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Book was not found with id: " + id)
-        );
+                );
     }
 
     @Override
@@ -35,5 +36,21 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public BookDto updateById(Long id, CreateBookRequestDto requestDto) {
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Book wasn't updated, because book with id: " + id + "doesn't exist"
+                )
+        );
+        bookMapper.updateBook(requestDto, book);
+        return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
     }
 }
