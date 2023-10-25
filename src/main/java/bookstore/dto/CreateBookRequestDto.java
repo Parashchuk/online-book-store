@@ -1,6 +1,6 @@
 package bookstore.dto;
 
-import bookstore.validation.ISBN;
+import bookstore.validation.Isbn;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public record CreateBookRequestDto(
         String author,
 
         @NotNull
-        @ISBN
+        @Isbn
         String isbn,
 
         @DecimalMin("0.01")

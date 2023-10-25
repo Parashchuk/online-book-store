@@ -7,10 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = ISBNValidator.class)
+@Constraint(validatedBy = IsbnValidator.class)
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ISBN {
+public @interface Isbn {
     String message() default "identifier must be 13 characters long";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

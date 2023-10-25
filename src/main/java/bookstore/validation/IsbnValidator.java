@@ -3,10 +3,10 @@ package bookstore.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ISBNValidator implements ConstraintValidator<ISBN, String> {
+public class IsbnValidator implements ConstraintValidator<Isbn, String> {
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-         return s != null && s.length() == 13;
+        return s != null && s.length() == 13;
     }
 }
