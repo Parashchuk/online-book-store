@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: update-books-column-description-type
+      author: a.parashchuk
+      changes:
+        - modifyDataType:
+            tableName: books
+            columnName: cover_image
+            newDataType: varchar(1024)
