@@ -1,5 +1,6 @@
 package bookstore.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -22,16 +24,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             MethodArgumentNotValidException ex,
             HttpHeaders headers,
             HttpStatusCode status,
-            WebRequest request) {
+            WebRequest request
+    ) {
         Map<String, Object> body = new LinkedHashMap<>();
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
 
+        body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
         body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+            EntityNotFoundException ex
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", HttpStatus.NOT_FOUND);
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     private String getErrorMessage(ObjectError error) {

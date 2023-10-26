@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Isbn {
-    String message() default "identifier must be 13 characters long";
+    String message() default "identifier must be 13 characters long and not be blank";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
