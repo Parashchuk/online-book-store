@@ -1,7 +1,6 @@
 package bookstore.exception;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +30,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .map(this::getErrorMessage)
                 .toList();
 
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("timestamp", LocalDateTime.now());
         body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
     }
@@ -42,9 +39,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             EntityNotFoundException ex
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", HttpStatus.NOT_FOUND);
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }

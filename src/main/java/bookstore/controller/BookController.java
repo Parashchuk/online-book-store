@@ -34,7 +34,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.findById(id);
     }
 
@@ -54,8 +54,8 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void deleteBookById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBookById(@PathVariable @Positive Long id) {
         bookService.deleteById(id);
     }
 }
