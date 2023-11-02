@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,28 +33,28 @@ public class BookController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(description = "Get all books")
-    public List<BookDto> getAll(Pageable pageable) {
+    @Operation(description = "Get list of all books from DB")
+    public List<BookDto> getAll(@PageableDefault Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(description = "Get one book by its id")
+    @Operation(description = "Get a book by its id")
     public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(description = "Create the book")
+    @Operation(description = "Create a new book")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto book) {
         return bookService.save(book);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(description = "Update book by id")
+    @Operation(description = "Update a book by its ID")
     public BookDto updateBookById(
             @PathVariable @Positive Long id,
             @Valid @RequestBody CreateBookRequestDto book
@@ -63,7 +64,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(description = "Delete book by id")
+    @Operation(description = "Delete a book by its ID")
     public void deleteBookById(@PathVariable @Positive Long id) {
         bookService.deleteById(id);
     }
