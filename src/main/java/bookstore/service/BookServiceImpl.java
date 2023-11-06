@@ -1,7 +1,7 @@
 package bookstore.service;
 
-import bookstore.dto.BookDto;
-import bookstore.dto.CreateBookRequestDto;
+import bookstore.dto.BookRequestDto;
+import bookstore.dto.BookResponseDto;
 import bookstore.entity.Book;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepository;
@@ -18,36 +18,36 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookDto save(CreateBookRequestDto bookRequestDto) {
-        return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
+    public BookResponseDto save(BookRequestDto bookRequestDto) {
+        return bookMapper.toResponseDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
     }
 
     @Override
-    public BookDto findById(Long id) {
+    public BookResponseDto findById(Long id) {
         return bookRepository.findById(id)
-                .map(bookMapper::toDto)
+                .map(bookMapper::toResponseDto)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Book was not found with id: " + id)
                 );
     }
 
     @Override
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookResponseDto> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable)
                 .stream()
-                .map(bookMapper::toDto)
+                .map(bookMapper::toResponseDto)
                 .toList();
     }
 
     @Override
-    public BookDto updateById(Long id, CreateBookRequestDto requestDto) {
+    public BookResponseDto updateById(Long id, BookRequestDto requestDto) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Book wasn't updated, because book with id: " + id + " doesn't exist"
                 )
         );
         bookMapper.updateBook(requestDto, book);
-        return bookMapper.toDto(bookRepository.save(book));
+        return bookMapper.toResponseDto(bookRepository.save(book));
     }
 
     @Override

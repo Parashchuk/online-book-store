@@ -1,5 +1,6 @@
 package bookstore.exception;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,9 +40,36 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
             EntityNotFoundException ex
     ) {
+        return getCustomExceptionHandler(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<Map<String, Object>> handleRegistrationException(
+            RegistrationException ex
+    ) {
+        return getCustomExceptionHandler(ex, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleLoginException(
+            BadCredentialsException ex
+    ) {
+        return getCustomExceptionHandler(ex, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Map<String, Object>> handleJwtException(
+            JwtException ex
+    ) {
+        return getCustomExceptionHandler(ex, HttpStatus.FORBIDDEN);
+    }
+
+    private ResponseEntity<Map<String, Object>> getCustomExceptionHandler(Exception ex,
+                                                                          HttpStatus status) {
+        System.out.println(ex);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("message", ex.getMessage());
-        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, new HttpHeaders(), status);
     }
 
     private String getErrorMessage(ObjectError error) {
