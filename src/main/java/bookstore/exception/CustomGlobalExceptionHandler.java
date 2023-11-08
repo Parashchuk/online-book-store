@@ -1,6 +1,5 @@
 package bookstore.exception;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,16 +56,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return getCustomExceptionHandler(ex, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(JwtException.class)
-    public ResponseEntity<Map<String, Object>> handleJwtException(
-            JwtException ex
-    ) {
-        return getCustomExceptionHandler(ex, HttpStatus.FORBIDDEN);
-    }
-
     private ResponseEntity<Map<String, Object>> getCustomExceptionHandler(Exception ex,
                                                                           HttpStatus status) {
-        System.out.println(ex);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, new HttpHeaders(), status);

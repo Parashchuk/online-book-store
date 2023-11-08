@@ -1,5 +1,6 @@
-package bookstore.entity;
+package bookstore.entity.user;
 
+import bookstore.entity.role.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

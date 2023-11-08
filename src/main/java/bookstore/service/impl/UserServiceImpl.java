@@ -1,14 +1,15 @@
-package bookstore.service;
+package bookstore.service.impl;
 
 import bookstore.dto.RegisterRequestDto;
 import bookstore.dto.RegisterResponseDto;
-import bookstore.entity.RoleName;
-import bookstore.entity.User;
+import bookstore.entity.role.RoleName;
+import bookstore.entity.user.User;
 import bookstore.exception.RegistrationException;
 import bookstore.mapper.UserMapper;
 import bookstore.repository.RoleRepository;
 import bookstore.repository.UserRepository;
 import bookstore.security.AuthenticationService;
+import bookstore.service.UserService;
 import java.util.Arrays;
 import java.util.HashSet;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public RegisterResponseDto register(RegisterRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.email()).isPresent()) {
             throw new RegistrationException(
-                    "The email can't be used because it's already taken: " + requestDto.email()
+                    "Some data" + requestDto.email()
             );
         }
         User user = userMapper.toModel(

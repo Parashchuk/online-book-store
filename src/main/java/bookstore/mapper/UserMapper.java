@@ -2,8 +2,8 @@ package bookstore.mapper;
 
 import bookstore.dto.RegisterRequestDto;
 import bookstore.dto.RegisterResponseDto;
-import bookstore.entity.Role;
-import bookstore.entity.User;
+import bookstore.entity.role.Role;
+import bookstore.entity.user.User;
 import java.util.HashSet;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

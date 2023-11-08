@@ -1,10 +1,11 @@
-package bookstore.service;
+package bookstore.service.impl;
 
 import bookstore.dto.BookRequestDto;
 import bookstore.dto.BookResponseDto;
-import bookstore.entity.Book;
+import bookstore.entity.book.Book;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepository;
+import bookstore.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

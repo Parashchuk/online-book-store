@@ -1,4 +1,4 @@
-package bookstore.entity;
+package bookstore.entity.role;
 
 public enum RoleName {
         ROLE_ADMIN,

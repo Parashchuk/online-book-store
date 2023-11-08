@@ -2,7 +2,7 @@ package bookstore.mapper;
 
 import bookstore.dto.BookRequestDto;
 import bookstore.dto.BookResponseDto;
-import bookstore.entity.Book;
+import bookstore.entity.book.Book;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -1,6 +1,6 @@
 package bookstore.dto;
 
-import jakarta.validation.constraints.Email;
+import bookstore.validation.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
