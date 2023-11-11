@@ -21,7 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
@@ -32,4 +32,8 @@ public class Role implements GrantedAuthority {
         return name.name();
     }
 
+    public enum RoleName {
+        ROLE_ADMIN,
+        ROLE_USER
+    }
 }

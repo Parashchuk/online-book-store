@@ -1,6 +1,5 @@
 package bookstore.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,9 +35,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, headers, status);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
-            EntityNotFoundException ex
+            UsernameNotFoundException ex
     ) {
         return getCustomExceptionHandler(ex, HttpStatus.NOT_FOUND);
     }
@@ -46,7 +46,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Map<String, Object>> handleRegistrationException(
             RegistrationException ex
     ) {
-        return getCustomExceptionHandler(ex, HttpStatus.BAD_REQUEST);
+        return getCustomExceptionHandler(ex, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
