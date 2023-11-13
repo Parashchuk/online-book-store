@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public record CreateBookRequestDto(
+public record BookRequestDto(
         @NotBlank
         @Size(min = 2, max = 50)
         String title,

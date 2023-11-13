@@ -5,3 +5,12 @@ databaseChangeLog:
       file: db/changelog/changes/02-update-books-column-description-type.yaml
   - include:
       file: db/changelog/changes/03-update-books-column-cover-image-type.yaml
+  - include:
+      file: db/changelog/changes/04-create-roles-table.yaml
+  - include:
+      file: db/changelog/changes/05-create-users-table.yaml
+  - include:
+      file: db/changelog/changes/06-create-users-roles-table.yaml
+  - include:
+      file: db/changelog/changes/07-initialize-roles-table.yaml
+
