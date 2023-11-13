@@ -1,9 +1,8 @@
 package bookstore.validation;
 
-import bookstore.exception.RegistrationException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.lang.reflect.Field;
+import org.springframework.beans.BeanWrapperImpl;
 
 public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, Object> {
     private String firstFieldName;
@@ -16,25 +15,9 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
     }
 
     @Override
-    public boolean isValid(Object obj, ConstraintValidatorContext context) {
-        try {
-            Object firstObj = getProperty(obj, firstFieldName);
-            Object secondObj = getProperty(obj, secondFieldName);
-            if (firstObj.equals(secondObj)) {
-                return true;
-            } else {
-                throw new RegistrationException("Passwords don't match");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Unsuccessful try to match passwords", e);
-        }
-    }
-
-    private Object getProperty(Object obj, String fieldName)
-            throws NoSuchFieldException, IllegalAccessException {
-        Class<?> clazz = obj.getClass();
-        Field field = clazz.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field.get(obj);
+    public boolean isValid(Object object, ConstraintValidatorContext constraintValidatorContext) {
+        Object password = new BeanWrapperImpl(object).getPropertyValue(firstFieldName);
+        Object repeatPassword = new BeanWrapperImpl(object).getPropertyValue(secondFieldName);
+        return password != null && password.equals(repeatPassword);
     }
 }

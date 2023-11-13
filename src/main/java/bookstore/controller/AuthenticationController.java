@@ -26,13 +26,13 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     @Operation(description = "Authenticate user by his login and password, returns a JWT")
-    LoginResponseDto login(@Valid @RequestBody LoginRequestDto request) {
+    public LoginResponseDto login(@Valid @RequestBody LoginRequestDto request) {
         return authenticationService.authenticate(request);
     }
 
     @PostMapping("/register")
     @Operation(description = "Register user, returns UserData and JWT")
-    RegisterResponseDto register(@Valid @RequestBody RegisterRequestDto request)
+    public RegisterResponseDto register(@Valid @RequestBody RegisterRequestDto request)
             throws RegistrationException {
         return userService.register(request);
     }

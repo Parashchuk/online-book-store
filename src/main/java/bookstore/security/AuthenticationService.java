@@ -2,7 +2,6 @@ package bookstore.security;
 
 import bookstore.dto.LoginRequestDto;
 import bookstore.dto.LoginResponseDto;
-import bookstore.dto.RegisterRequestDto;
 import bookstore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,9 +28,5 @@ public class AuthenticationService {
         );
         String token = jwtUtil.generateToken(authentication.getName());
         return new LoginResponseDto(token);
-    }
-
-    public String authenticate(RegisterRequestDto requestDto) {
-        return jwtUtil.generateToken(requestDto.email());
     }
 }

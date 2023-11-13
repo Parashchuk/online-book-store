@@ -17,7 +17,7 @@ import org.mapstruct.ReportingPolicy;
         implementationPackage = "<PACKAGE_NAME>.impl"
 )
 public interface UserMapper {
-    RegisterResponseDto toRegisterResponseDto(User user, String token);
+    RegisterResponseDto toRegisterResponseDto(User user);
 
     User toModel(RegisterRequestDto userRequestDto, HashSet<Role> roles);
 }
