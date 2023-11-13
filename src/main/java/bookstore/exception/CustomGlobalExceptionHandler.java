@@ -1,5 +1,6 @@
 package bookstore.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+    public ResponseEntity<Map<String, Object>> handleUsernameNotFoundException(
             UsernameNotFoundException ex
+    ) {
+        return getCustomExceptionHandler(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+            EntityNotFoundException ex
     ) {
         return getCustomExceptionHandler(ex, HttpStatus.NOT_FOUND);
     }

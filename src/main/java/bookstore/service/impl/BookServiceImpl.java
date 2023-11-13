@@ -1,7 +1,7 @@
 package bookstore.service.impl;
 
-import bookstore.dto.BookRequestDto;
-import bookstore.dto.BookResponseDto;
+import bookstore.dto.book.BookRequestDto;
+import bookstore.dto.book.BookResponseDto;
 import bookstore.entity.book.Book;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepository;
@@ -20,13 +20,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponseDto save(BookRequestDto bookRequestDto) {
-        return bookMapper.toResponseDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
+        return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
+    }
+
+    @Override
+    public List<BookResponseDto> findAllByCategoryId(Long id, Pageable pageable) {
+        return bookRepository.findAllByCategoriesId(id).stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
 
     @Override
     public BookResponseDto findById(Long id) {
         return bookRepository.findById(id)
-                .map(bookMapper::toResponseDto)
+                .map(bookMapper::toDto)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Book was not found with id: " + id)
                 );
@@ -36,7 +43,7 @@ public class BookServiceImpl implements BookService {
     public List<BookResponseDto> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable)
                 .stream()
-                .map(bookMapper::toResponseDto)
+                .map(bookMapper::toDto)
                 .toList();
     }
 
@@ -48,7 +55,7 @@ public class BookServiceImpl implements BookService {
                 )
         );
         bookMapper.updateBook(requestDto, book);
-        return bookMapper.toResponseDto(bookRepository.save(book));
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override

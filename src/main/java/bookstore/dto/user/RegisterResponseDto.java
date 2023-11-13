@@ -1,4 +1,4 @@
-package bookstore.dto;
+package bookstore.dto.user;
 
 public record RegisterResponseDto(
         String email,

@@ -1,8 +1,7 @@
 package bookstore.mapper;
 
-import bookstore.dto.book.BookRequestDto;
-import bookstore.dto.book.BookResponseDto;
-import bookstore.entity.book.Book;
+import bookstore.dto.category.CategoryDto;
+import bookstore.entity.category.Category;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -16,10 +15,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         implementationPackage = "<PACKAGE_NAME>.impl"
 )
-public interface BookMapper {
-    BookResponseDto toDto(Book book);
+public interface CategoryMapper {
+    Category toModel(CategoryDto requestDto);
 
-    Book toModel(BookRequestDto bookRequestDto);
+    CategoryDto toDto(Category category);
 
-    void updateBook(BookRequestDto dto, @MappingTarget Book book);
+    void updateCategory(CategoryDto categoryDto, @MappingTarget Category category);
 }
