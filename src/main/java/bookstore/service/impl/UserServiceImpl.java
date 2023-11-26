@@ -5,7 +5,9 @@ import bookstore.dto.user.RegisterResponseDto;
 import bookstore.entity.role.Role;
 import bookstore.entity.user.User;
 import bookstore.exception.RegistrationException;
+import bookstore.mapper.CartMapper;
 import bookstore.mapper.UserMapper;
+import bookstore.repository.CartRepository;
 import bookstore.repository.RoleRepository;
 import bookstore.repository.UserRepository;
 import bookstore.service.UserService;
@@ -14,16 +16,20 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    private final CartMapper cartMapper;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public RegisterResponseDto register(RegisterRequestDto requestDto)
             throws RegistrationException {
         existsByEmail(requestDto);
@@ -36,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 )
         );
         user.setPassword(passwordEncoder.encode(requestDto.password()));
-        userRepository.save(user);
+        cartRepository.save(cartMapper.toModel(userRepository.save(user)));
         return userMapper.toDto(user);
     }
 
