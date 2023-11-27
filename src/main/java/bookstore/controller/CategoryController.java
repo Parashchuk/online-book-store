@@ -5,6 +5,7 @@ import bookstore.dto.category.CategoryResponseDto;
 import bookstore.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(description = "Create a new category")
     public CategoryResponseDto createCategory(
-            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+            @RequestBody @Valid CategoryCreateDto categoryCreateDto
     ) {
         return categoryService.save(categoryCreateDto);
     }
@@ -62,7 +63,7 @@ public class CategoryController {
     @Operation(description = "Update a category by its ID")
     public CategoryResponseDto updateCategoryById(
             @PathVariable @Positive Long id,
-            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+            @RequestBody @Valid CategoryCreateDto categoryCreateDto
     ) {
         return categoryService.updateById(id, categoryCreateDto);
     }
