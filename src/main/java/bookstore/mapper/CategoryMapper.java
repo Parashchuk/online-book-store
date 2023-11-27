@@ -1,6 +1,7 @@
 package bookstore.mapper;
 
-import bookstore.dto.category.CategoryDto;
+import bookstore.dto.category.CategoryCreateDto;
+import bookstore.dto.category.CategoryResponseDto;
 import bookstore.entity.category.Category;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -16,9 +17,9 @@ import org.mapstruct.ReportingPolicy;
         implementationPackage = "<PACKAGE_NAME>.impl"
 )
 public interface CategoryMapper {
-    Category toModel(CategoryDto requestDto);
+    Category toModel(CategoryCreateDto requestDto);
 
-    CategoryDto toDto(Category category);
+    CategoryResponseDto toDto(Category category);
 
-    void updateCategory(CategoryDto categoryDto, @MappingTarget Category category);
+    void updateCategory(CategoryCreateDto categoryCreateDto, @MappingTarget Category category);
 }

@@ -1,6 +1,7 @@
 package bookstore.service.impl;
 
-import bookstore.dto.category.CategoryDto;
+import bookstore.dto.category.CategoryCreateDto;
+import bookstore.dto.category.CategoryResponseDto;
 import bookstore.entity.category.Category;
 import bookstore.mapper.CategoryMapper;
 import bookstore.repository.CategoryRepository;
@@ -18,15 +19,21 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAll(Pageable pageable) {
-        return categoryRepository.findAll(pageable)
-                .stream()
+    public CategoryResponseDto save(CategoryCreateDto categoryCreateDto) {
+        return categoryMapper.toDto(
+                categoryRepository.save(categoryMapper.toModel(categoryCreateDto))
+        );
+    }
+
+    @Override
+    public List<CategoryResponseDto> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).stream()
                 .map(categoryMapper::toDto)
                 .toList();
     }
 
     @Override
-    public CategoryDto getById(Long id) {
+    public CategoryResponseDto getById(Long id) {
         return categoryRepository.findById(id)
                 .map(categoryMapper::toDto)
                 .orElseThrow(() ->
@@ -35,19 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto save(CategoryDto categoryDto) {
-        return categoryMapper.toDto(categoryRepository.save(categoryMapper.toModel(categoryDto)));
-    }
-
-    @Override
-    public CategoryDto updateById(Long id, CategoryDto categoryDto) {
+    public CategoryResponseDto updateById(Long id, CategoryCreateDto categoryCreateDto) {
         Category category = categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Category wasn't updated, because category with id: " + id
                                 + " doesn't exist"
                 )
         );
-        categoryMapper.updateCategory(categoryDto, category);
+        categoryMapper.updateCategory(categoryCreateDto, category);
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 

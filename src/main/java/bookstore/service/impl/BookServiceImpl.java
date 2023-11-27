@@ -1,32 +1,42 @@
 package bookstore.service.impl;
 
-import bookstore.dto.book.BookRequestDto;
+import bookstore.dto.book.BookCreateDto;
 import bookstore.dto.book.BookResponseDto;
+import bookstore.dto.book.BookResponseWithoutCategoriesDto;
 import bookstore.entity.book.Book;
+import bookstore.entity.category.Category;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepository;
+import bookstore.repository.CategoryRepository;
 import bookstore.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     private final BookMapper bookMapper;
 
     @Override
-    public BookResponseDto save(BookRequestDto bookRequestDto) {
-        return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookRequestDto)));
+    @Transactional
+    public BookResponseDto save(BookCreateDto bookCreateDto) {
+        Book book = bookMapper.toModel(bookCreateDto);
+        setCategories(book, bookCreateDto.categories());
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
-    public List<BookResponseDto> findAllByCategoryId(Long id, Pageable pageable) {
+    public List<BookResponseWithoutCategoriesDto> findAllByCategoryId(Long id, Pageable pageable) {
         return bookRepository.findAllByCategoriesId(id).stream()
-                .map(bookMapper::toDto)
+                .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }
 
@@ -41,25 +51,36 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponseDto> findAll(Pageable pageable) {
-        return bookRepository.findAll(pageable)
-                .stream()
+        return bookRepository.findByIdNotNull(pageable).stream()
                 .map(bookMapper::toDto)
                 .toList();
     }
 
     @Override
-    public BookResponseDto updateById(Long id, BookRequestDto requestDto) {
+    @Transactional
+    public BookResponseDto updateById(Long id, BookCreateDto requestDto) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Book wasn't updated, because book with id: " + id + " doesn't exist"
                 )
         );
+        setCategories(book, requestDto.categories());
         bookMapper.updateBook(requestDto, book);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    private void setCategories(Book book, Set<Long> categoryIds) {
+        Set<Category> categories = categoryIds.stream()
+                .map(id -> categoryRepository.findById(id).orElseThrow(
+                        () -> new EntityNotFoundException("Category was not found with id" + id)
+                ))
+                .collect(Collectors.toSet());
+        book.setCategories(categories);
     }
 }

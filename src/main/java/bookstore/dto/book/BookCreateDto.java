@@ -6,8 +6,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Set;
 
-public record BookRequestDto(
+public record BookCreateDto(
         @NotBlank
         @Size(min = 2, max = 50)
         String title,
@@ -26,5 +27,6 @@ public record BookRequestDto(
         String description,
 
         @Max(1024)
-        String coverImage) {
+        String coverImage,
+        Set<Long> categories) {
 }

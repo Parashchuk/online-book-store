@@ -1,8 +1,7 @@
 package bookstore.controller;
 
-import bookstore.dto.book.BookResponseDto;
-import bookstore.dto.category.CategoryDto;
-import bookstore.service.BookService;
+import bookstore.dto.category.CategoryCreateDto;
+import bookstore.dto.category.CategoryResponseDto;
 import bookstore.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,30 +29,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class CategoryController {
     private final CategoryService categoryService;
-    private final BookService bookService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get list of all categories from DB")
-    public List<CategoryDto> getAll(Pageable pageable) {
+    public List<CategoryResponseDto> getAll(Pageable pageable) {
         return categoryService.findAll(pageable);
-    }
-
-    @GetMapping("/{id}/books")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER')")
-    @Operation(description = "Get list of all books by its categories from DB")
-    public List<BookResponseDto> getBooksByCategoryId(@PathVariable @Positive Long id,
-                                                      Pageable pageable) {
-        return bookService.findAllByCategoryId(id, pageable);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get a category by its id")
-    public CategoryDto getById(@PathVariable @Positive Long id) {
+    public CategoryResponseDto getById(@PathVariable @Positive Long id) {
         return categoryService.getById(id);
     }
 
@@ -61,17 +50,21 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(description = "Create a new category")
-    public CategoryDto createCategory(@RequestBody @Validated CategoryDto categoryDto) {
-        return categoryService.save(categoryDto);
+    public CategoryResponseDto createCategory(
+            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+    ) {
+        return categoryService.save(categoryCreateDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(description = "Update a category by its ID")
-    public CategoryDto updateCategoryById(@PathVariable @Positive Long id,
-                                          @RequestBody @Validated CategoryDto categoryDto) {
-        return categoryService.updateById(id, categoryDto);
+    public CategoryResponseDto updateCategoryById(
+            @PathVariable @Positive Long id,
+            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+    ) {
+        return categoryService.updateById(id, categoryCreateDto);
     }
 
     @DeleteMapping("/{id}")

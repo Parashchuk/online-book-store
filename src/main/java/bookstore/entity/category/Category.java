@@ -26,8 +26,8 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+    private String description;
 
     @Column(nullable = false)
     private boolean isDeleted;
-    private String description;
 }
