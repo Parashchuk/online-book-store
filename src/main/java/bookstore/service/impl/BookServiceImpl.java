@@ -80,7 +80,7 @@ public class BookServiceImpl implements BookService {
     private void setCategories(Book book, Set<Long> categoryIds) {
         Set<Category> categories = categoryIds.stream()
                 .map(id -> categoryRepository.findById(id).orElseThrow(
-                        () -> new EntityNotFoundException("Category was not found with id" + id)
+                        () -> new EntityNotFoundException("Category was not found with id: " + id)
                 ))
                 .collect(Collectors.toSet());
         book.setCategories(categories);

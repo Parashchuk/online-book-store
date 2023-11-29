@@ -9,7 +9,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +37,9 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get list of all categories from DB")
-    public List<CategoryResponseDto> getAll(Pageable pageable) {
+    public List<CategoryResponseDto> getAll(
+            @ParameterObject Pageable pageable
+    ) {
         return categoryService.findAll(pageable);
     }
 

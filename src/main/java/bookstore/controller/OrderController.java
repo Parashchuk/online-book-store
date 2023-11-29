@@ -11,7 +11,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -48,7 +50,9 @@ public class OrderController {
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(description = "Retrieve all orders with its items")
-    List<OrderResponseDto> getAllOrders(Authentication authentication, Pageable pageable) {
+    List<OrderResponseDto> getAllOrders(
+            Authentication authentication,
+            @ParameterObject @PageableDefault(size = 5, sort = "order_date,desc") Pageable pageable) {
         return orderService.getAllOrders(authentication.getName(), pageable);
     }
 
@@ -78,7 +82,7 @@ public class OrderController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(description = "Retrieve all order items from certain order")
+    @Operation(description = "Update order status")
     OrderResponseDto updateOrderStatus(
             @PathVariable @Positive Long id,
             @RequestBody @Valid OrderUpdateDto updateDto

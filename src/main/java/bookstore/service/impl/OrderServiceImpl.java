@@ -62,7 +62,10 @@ public class OrderServiceImpl implements OrderService {
     public OrderItemResponseDto getOrderItem(Long orderId, Long orderItemId, String username) {
         User user = userRepository.getUserByEmail(username);
         Order order = orderRepository.findByIdAndUser(orderId, user);
-        return orderItemMapper.toDto(orderItemRepository.findByIdAndOrder(orderItemId, order));
+        return orderItemMapper.toDto(orderItemRepository.findByIdAndOrder(orderItemId, order)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Invalid order")
+                ));
     }
 
     @Override
