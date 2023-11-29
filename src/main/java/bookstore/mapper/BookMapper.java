@@ -1,9 +1,9 @@
 package bookstore.mapper;
 
 import bookstore.config.MapperConfig;
-import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BookResponseWithoutCategoriesDto;
+import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.entity.book.Book;
 import org.mapstruct.Mapper;
