@@ -1,9 +1,9 @@
 package bookstore.controller;
 
-import bookstore.dto.LoginRequestDto;
-import bookstore.dto.LoginResponseDto;
-import bookstore.dto.RegisterRequestDto;
-import bookstore.dto.RegisterResponseDto;
+import bookstore.dto.user.LoginRequestDto;
+import bookstore.dto.user.LoginResponseDto;
+import bookstore.dto.user.RegisterRequestDto;
+import bookstore.dto.user.RegisterResponseDto;
 import bookstore.exception.RegistrationException;
 import bookstore.security.AuthenticationService;
 import bookstore.service.UserService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "BookStoreAPI", description = "Endpoints for managing books")
+@Tag(name = "Authentication", description = "Endpoints authorization, authentication")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")

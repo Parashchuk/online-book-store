@@ -1,7 +1,7 @@
 package bookstore.service;
 
-import bookstore.dto.RegisterRequestDto;
-import bookstore.dto.RegisterResponseDto;
+import bookstore.dto.user.RegisterRequestDto;
+import bookstore.dto.user.RegisterResponseDto;
 import bookstore.exception.RegistrationException;
 
 public interface UserService {

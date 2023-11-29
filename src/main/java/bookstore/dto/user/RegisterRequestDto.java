@@ -1,4 +1,4 @@
-package bookstore.dto;
+package bookstore.dto.user;
 
 import bookstore.validation.Email;
 import bookstore.validation.PasswordsMatch;

@@ -1,7 +1,7 @@
 package bookstore.service.impl;
 
-import bookstore.dto.RegisterRequestDto;
-import bookstore.dto.RegisterResponseDto;
+import bookstore.dto.user.RegisterRequestDto;
+import bookstore.dto.user.RegisterResponseDto;
 import bookstore.entity.role.Role;
 import bookstore.entity.user.User;
 import bookstore.exception.RegistrationException;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         );
         user.setPassword(passwordEncoder.encode(requestDto.password()));
         userRepository.save(user);
-        return userMapper.toRegisterResponseDto(user);
+        return userMapper.toDto(user);
     }
 
     private void existsByEmail(RegisterRequestDto requestDto) throws RegistrationException {

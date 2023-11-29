@@ -1,24 +1,24 @@
 package bookstore.mapper;
 
-import bookstore.dto.BookRequestDto;
-import bookstore.dto.BookResponseDto;
+import bookstore.config.MapperConfig;
+import bookstore.dto.book.BookResponseDto;
+import bookstore.dto.book.BookResponseWithoutCategoriesDto;
+import bookstore.dto.book.CreateBookRequestDto;
+import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.entity.book.Book;
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        implementationPackage = "<PACKAGE_NAME>.impl"
-)
+@Mapper(config = MapperConfig.class)
 public interface BookMapper {
-    BookResponseDto toResponseDto(Book book);
+    BookResponseWithoutCategoriesDto toDtoWithoutCategories(Book book);
 
-    Book toModel(BookRequestDto bookRequestDto);
+    BookResponseDto toDto(Book book);
 
-    void updateBook(BookRequestDto dto, @MappingTarget Book book);
+    @Mapping(target = "categories", ignore = true)
+    Book toModel(CreateBookRequestDto createBookRequestDto);
+
+    @Mapping(target = "categories", ignore = true)
+    void updateBook(UpdateBookRequestDto dto, @MappingTarget Book book);
 }

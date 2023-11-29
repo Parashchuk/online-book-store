@@ -1,12 +1,11 @@
 package bookstore.mapper;
 
-import bookstore.dto.user.RegisterRequestDto;
-import bookstore.dto.user.RegisterResponseDto;
-import bookstore.entity.role.Role;
-import bookstore.entity.user.User;
-import java.util.HashSet;
+import bookstore.dto.category.CategoryCreateDto;
+import bookstore.dto.category.CategoryResponseDto;
+import bookstore.entity.category.Category;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
@@ -17,8 +16,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         implementationPackage = "<PACKAGE_NAME>.impl"
 )
-public interface UserMapper {
-    RegisterResponseDto toDto(User user);
+public interface CategoryMapper {
+    Category toModel(CategoryCreateDto requestDto);
 
-    User toModel(RegisterRequestDto userRequestDto, HashSet<Role> roles);
+    CategoryResponseDto toDto(Category category);
+
+    void updateCategory(CategoryCreateDto categoryCreateDto, @MappingTarget Category category);
 }
