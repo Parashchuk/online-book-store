@@ -1,5 +1,6 @@
 package bookstore.mapper;
 
+import bookstore.config.MapperConfig;
 import bookstore.dto.user.RegisterRequestDto;
 import bookstore.dto.user.RegisterResponseDto;
 import bookstore.entity.role.Role;
@@ -10,13 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(
-        componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        implementationPackage = "<PACKAGE_NAME>.impl"
-)
+@Mapper(config = MapperConfig.class)
 public interface UserMapper {
     RegisterResponseDto toDto(User user);
 

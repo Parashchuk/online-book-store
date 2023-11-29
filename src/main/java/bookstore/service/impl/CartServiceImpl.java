@@ -1,8 +1,8 @@
 package bookstore.service.impl;
 
 import bookstore.dto.cart.CartItemResponseDto;
-import bookstore.dto.cart.CartRequestAddDto;
-import bookstore.dto.cart.CartRequestUpdateDto;
+import bookstore.dto.cart.CreateCartItemRequestDto;
+import bookstore.dto.cart.UpdateCartItemRequestDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.entity.cart.Cart;
 import bookstore.mapper.CartMapper;
@@ -22,7 +22,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponseDto addCartItem(CartRequestAddDto addToCartDto, String username) {
+    public CartResponseDto addCartItem(CreateCartItemRequestDto addToCartDto, String username) {
         Cart cart = cartRepository.getCartByUserEmail(username);
         cartItemService.saveCartItem(addToCartDto, cart);
         return getCart(username);
@@ -37,16 +37,20 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartItemResponseDto updateCartItem(
             Long id,
-            CartRequestUpdateDto cartRequestUpdateDto,
+            UpdateCartItemRequestDto updateCartItemRequestDto,
             String username
     ) {
+        Cart cart = cartRepository.getCartByUserEmail(username);
         return cartMapper.cartItemToResponseDto(
-                cartItemService.updateCartItemById(id, cartRequestUpdateDto.quantity())
+                cartItemService.updateCartItemById(
+                        id, updateCartItemRequestDto.quantity(), cart
+                )
         );
     }
 
     @Override
     public void deleteCartItem(Long id, String username) {
-        cartItemService.deleteCartItemById(id);
+        Cart cart = cartRepository.getCartByUserEmail(username);
+        cartItemService.deleteCartItemById(id, cart);
     }
 }

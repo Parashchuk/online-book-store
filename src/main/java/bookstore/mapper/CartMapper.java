@@ -1,5 +1,6 @@
 package bookstore.mapper;
 
+import bookstore.config.MapperConfig;
 import bookstore.dto.cart.CartItemResponseDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.entity.cart.Cart;
@@ -11,14 +12,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(
-        componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        implementationPackage = "<PACKAGE_NAME>.impl"
-
-)
+@Mapper(config = MapperConfig.class)
 public interface CartMapper {
     @Mapping(ignore = true, target = "id")
     Cart toModel(User user);

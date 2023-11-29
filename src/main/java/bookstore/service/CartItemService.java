@@ -1,13 +1,13 @@
 package bookstore.service;
 
-import bookstore.dto.cart.CartRequestAddDto;
+import bookstore.dto.cart.CreateCartItemRequestDto;
 import bookstore.entity.cart.Cart;
 import bookstore.entity.cart.CartItem;
 
 public interface CartItemService {
-    void saveCartItem(CartRequestAddDto addToCartDto, Cart cart);
+    void saveCartItem(CreateCartItemRequestDto addToCartDto, Cart cart);
 
-    CartItem updateCartItemById(Long id, int quantity);
+    CartItem updateCartItemById(Long id, int quantity, Cart cart);
 
-    void deleteCartItemById(Long id);
+    void deleteCartItemById(Long id, Cart cart);
 }

@@ -1,6 +1,6 @@
 package bookstore.service.impl;
 
-import bookstore.dto.cart.CartRequestAddDto;
+import bookstore.dto.cart.CreateCartItemRequestDto;
 import bookstore.entity.book.Book;
 import bookstore.entity.cart.Cart;
 import bookstore.entity.cart.CartItem;
@@ -22,20 +22,28 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     @Transactional
-    public void saveCartItem(CartRequestAddDto addToCartDto, Cart cart) {
+    public void saveCartItem(CreateCartItemRequestDto addToCartDto, Cart cart) {
         Book book = bookRepository.findById(addToCartDto.book_id()).orElseThrow(
                 () -> new EntityNotFoundException("Book was not found with id: "
                         + addToCartDto.book_id())
         );
 
-        CartItem cartItem = cartItemMapper.toModel(cart, book, addToCartDto.quantity());
-        cartItemRepository.saveAndFlush(cartItem);
+        cartItemRepository.findCartItemByBookAndCart(book, cart).ifPresentOrElse(
+                (cartItem) -> {
+                    cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.quantity());
+                    cartItemRepository.save(cartItem);
+                },
+                () -> {
+                    CartItem cartItem = cartItemMapper.toModel(cart, book, addToCartDto.quantity());
+                    cartItemRepository.save(cartItem);
+                }
+        );
     }
 
     @Override
     @Transactional
-    public CartItem updateCartItemById(Long id, int quantity) {
-        CartItem cartItem = cartItemRepository.findById(id).orElseThrow(
+    public CartItem updateCartItemById(Long id, int quantity, Cart cart) {
+        CartItem cartItem = cartItemRepository.findByIdAndCart(id, cart).orElseThrow(
                 () -> new EntityNotFoundException("CartItem was not found with id: " + id)
         );
         cartItem.setQuantity(quantity);
@@ -43,8 +51,8 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void deleteCartItemById(Long id) {
-        cartItemRepository.findById(id).orElseThrow(
+    public void deleteCartItemById(Long id, Cart cart) {
+        cartItemRepository.findByIdAndCart(id, cart).orElseThrow(
                 () -> new EntityNotFoundException("CartItem was not found with id: " + id)
         );
         cartItemRepository.deleteById(id);

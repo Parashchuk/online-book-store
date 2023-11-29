@@ -1,8 +1,8 @@
 package bookstore.controller;
 
 import bookstore.dto.cart.CartItemResponseDto;
-import bookstore.dto.cart.CartRequestAddDto;
-import bookstore.dto.cart.CartRequestUpdateDto;
+import bookstore.dto.cart.CreateCartItemRequestDto;
+import bookstore.dto.cart.UpdateCartItemRequestDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +37,7 @@ public class CartController {
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Add a book to a cart")
     CartResponseDto addCartItem(
-            @RequestBody @Valid CartRequestAddDto addDto,
+            @RequestBody @Valid CreateCartItemRequestDto addDto,
             Authentication authentication
     ) {
         return cartService.addCartItem(addDto, authentication.getName());
@@ -51,26 +51,26 @@ public class CartController {
         return cartService.getCart(authentication.getName());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{cartItemId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Update amount of books in cart by its id")
     CartItemResponseDto updateCartItem(
-            @PathVariable @Positive Long id,
-            @RequestBody @Valid CartRequestUpdateDto updateDto,
+            @PathVariable @Positive Long cartItemId,
+            @RequestBody @Valid UpdateCartItemRequestDto updateDto,
             Authentication authentication
     ) {
-        return cartService.updateCartItem(id, updateDto, authentication.getName());
+        return cartService.updateCartItem(cartItemId, updateDto, authentication.getName());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cartItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('USER')")
-    @Operation(description = "Delete a book from cart")
+    @Operation(description = "Delete a cartItem from cart")
     void deleteCartItem(
-            @PathVariable @Positive Long id,
+            @PathVariable @Positive Long cartItemId,
             Authentication authentication
     ) {
-        cartService.deleteCartItem(id, authentication.getName());
+        cartService.deleteCartItem(cartItemId, authentication.getName());
     }
 }
