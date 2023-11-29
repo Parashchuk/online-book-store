@@ -1,8 +1,9 @@
 package bookstore.service.impl;
 
-import bookstore.dto.book.BookCreateDto;
+import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BookResponseWithoutCategoriesDto;
+import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.entity.book.Book;
 import bookstore.entity.category.Category;
 import bookstore.mapper.BookMapper;
@@ -27,9 +28,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookResponseDto save(BookCreateDto bookCreateDto) {
-        Book book = bookMapper.toModel(bookCreateDto);
-        setCategories(book, bookCreateDto.categories());
+    public BookResponseDto save(CreateBookRequestDto createBookRequestDto) {
+        Book book = bookMapper.toModel(createBookRequestDto);
+        setCategories(book, createBookRequestDto.categories());
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -50,22 +51,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public List<BookResponseDto> findAll(Pageable pageable) {
-        return bookRepository.findByIdNotNull(pageable).stream()
+        return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public BookResponseDto updateById(Long id, BookCreateDto requestDto) {
+    public BookResponseDto updateById(Long id, UpdateBookRequestDto updateBookRequestDto) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Book wasn't updated, because book with id: " + id + " doesn't exist"
                 )
         );
-        setCategories(book, requestDto.categories());
-        bookMapper.updateBook(requestDto, book);
+        setCategories(book, updateBookRequestDto.categories());
+        bookMapper.updateBook(updateBookRequestDto, book);
         return bookMapper.toDto(bookRepository.save(book));
     }
 

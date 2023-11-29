@@ -11,7 +11,4 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<Book, Long> {
     @EntityGraph(attributePaths = "categories")
     List<Book> findAllByCategoriesId(Long id);
-
-    @EntityGraph(attributePaths = "categories")
-    List<Book> findByIdNotNull(Pageable pageable);
 }

@@ -22,7 +22,6 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name = "books")
 @SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id = ?")
 @Where(clause = "is_deleted = false")
@@ -43,7 +42,6 @@ public class Book {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "books_categories",
