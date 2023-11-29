@@ -6,11 +6,8 @@ import bookstore.dto.cart.CartResponseDto;
 import bookstore.entity.cart.Cart;
 import bookstore.entity.cart.CartItem;
 import bookstore.entity.user.User;
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 
 @Mapper(config = MapperConfig.class)
 public interface CartMapper {

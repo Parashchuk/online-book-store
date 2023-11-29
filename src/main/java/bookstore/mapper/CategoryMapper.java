@@ -4,11 +4,8 @@ import bookstore.config.MapperConfig;
 import bookstore.dto.category.CategoryCreateDto;
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.entity.category.Category;
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 
 @Mapper(config = MapperConfig.class)
 public interface CategoryMapper {

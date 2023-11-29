@@ -1,9 +1,9 @@
 package bookstore.service;
 
 import bookstore.dto.cart.CartItemResponseDto;
+import bookstore.dto.cart.CartResponseDto;
 import bookstore.dto.cart.CreateCartItemRequestDto;
 import bookstore.dto.cart.UpdateCartItemRequestDto;
-import bookstore.dto.cart.CartResponseDto;
 
 public interface CartService {
     CartResponseDto addCartItem(CreateCartItemRequestDto addToCartDto, String username);
