@@ -52,7 +52,8 @@ public class OrderController {
     @Operation(description = "Retrieve all orders with its items")
     List<OrderResponseDto> getAllOrders(
             Authentication authentication,
-            @ParameterObject @PageableDefault(size = 5, sort = "order_date,desc") Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 5, sort = "order_date,desc") Pageable pageable
+    ) {
         return orderService.getAllOrders(authentication.getName(), pageable);
     }
 
