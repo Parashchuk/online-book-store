@@ -21,19 +21,17 @@ import org.hibernate.annotations.Where;
 @Setter
 @ToString
 @Table(name = "cart_items")
-@SQLDelete(sql = "UPDATE cart_items SET is_deleted = true WHERE id = ?")
-@Where(clause = "is_deleted = false")
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @OneToOne
-    @JoinColumn(name = "book_id")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @Column(nullable = false)
