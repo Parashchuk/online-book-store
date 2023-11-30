@@ -7,6 +7,6 @@ public record CreateCartItemRequestDto(
         @Positive
         Long book_id,
 
-        @Min(value = 1)
+        @Positive
         int quantity) {
 }
