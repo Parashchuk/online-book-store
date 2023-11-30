@@ -1,6 +1,5 @@
 package bookstore.dto.cart;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 
 public record CreateCartItemRequestDto(
