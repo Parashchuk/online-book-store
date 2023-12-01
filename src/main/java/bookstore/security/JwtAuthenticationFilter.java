@@ -1,5 +1,6 @@
 package bookstore.security;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +16,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    public static final String BEARER_STRING = "Bearer ";
+    private static final String BEARER_STRING = "Bearer ";
+    private final HandlerExceptionResolver handlerExceptionResolver;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
@@ -30,17 +33,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws IOException, ServletException {
         String token = getToken(request);
-        if (token != null && jwtUtil.isValidToken(token)) {
-            String email = jwtUtil.getUsername(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (token != null && jwtUtil.isValidToken(token)) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(
+                        jwtUtil.getUsername(token)
+                );
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            filterChain.doFilter(request, response);
+        } catch (JwtException e) {
+            handlerExceptionResolver.resolveException(request, response, null, e);
         }
-        filterChain.doFilter(request, response);
     }
 
     private String getToken(HttpServletRequest request) {
