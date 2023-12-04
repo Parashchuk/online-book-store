@@ -1,7 +1,6 @@
 package bookstore.controller;
 
 import bookstore.dto.book.BookResponseDto;
-import bookstore.dto.book.BookResponseWithoutCategoriesDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.service.BookService;
@@ -49,17 +48,6 @@ public class BookController {
     public List<BookResponseDto> getAll(
             @ParameterObject Pageable pageable) {
         return bookService.findAll(pageable);
-    }
-
-    @GetMapping("/{categoryId}/books")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER')")
-    @Operation(description = "Get list of all books by its categories from DB")
-    public List<BookResponseWithoutCategoriesDto> getBooksByCategoryId(
-            @PathVariable @Positive Long categoryId,
-            @ParameterObject Pageable pageable
-    ) {
-        return bookService.findAllByCategoryId(categoryId, pageable);
     }
 
     @GetMapping("/{bookId}")

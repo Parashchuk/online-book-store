@@ -1,8 +1,11 @@
 package bookstore.dto.order;
 
+import java.math.BigDecimal;
+
 public record OrderItemResponseDto(
         Long id,
         Long bookId,
-        int quantity
+        int quantity,
+        BigDecimal price
 ) {
 }

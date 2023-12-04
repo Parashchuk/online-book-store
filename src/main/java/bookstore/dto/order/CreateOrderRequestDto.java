@@ -1,10 +1,10 @@
 package bookstore.dto.order;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public record OrderCreateDto(
-        @Min(value = 5)
+public record CreateOrderRequestDto(
+        @Size(min = 5)
         @NotBlank
         String shippingAddress) {
 }

@@ -81,6 +81,24 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(OrderException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Map<String, Object>> handleOrderException(
+            OrderException ex
+    ) {
+        return getCustomExceptionHandler(ex, "empty-order",
+                HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DuplicateValueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, Object>> handleDuplicateValueException(
+            DuplicateValueException ex
+    ) {
+        return getCustomExceptionHandler(ex, "duplicate-property",
+                HttpStatus.BAD_REQUEST);
+    }
+
     private ResponseEntity<Map<String, Object>> getCustomExceptionHandler(
             Exception ex,
             String error,

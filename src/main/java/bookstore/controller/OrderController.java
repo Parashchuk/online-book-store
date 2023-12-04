@@ -1,9 +1,9 @@
 package bookstore.controller;
 
-import bookstore.dto.order.OrderCreateDto;
+import bookstore.dto.order.CreateOrderRequestDto;
 import bookstore.dto.order.OrderItemResponseDto;
 import bookstore.dto.order.OrderResponseDto;
-import bookstore.dto.order.OrderUpdateDto;
+import bookstore.dto.order.UpdateOrderRequestDto;
 import bookstore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +13,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,10 +41,10 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Create empty order")
     OrderResponseDto createOrder(
-            @RequestBody @Valid OrderCreateDto createDto,
+            @RequestBody @Valid CreateOrderRequestDto createDto,
             Authentication authentication
     ) {
-        return orderService.createOrder(createDto, authentication.getName());
+        return orderService.save(createDto, authentication.getName());
     }
 
     @GetMapping
@@ -52,9 +53,12 @@ public class OrderController {
     @Operation(description = "Retrieve all orders with its items")
     List<OrderResponseDto> getAllOrders(
             Authentication authentication,
-            @ParameterObject @PageableDefault(size = 5, sort = "order_date,desc") Pageable pageable
+            @ParameterObject @PageableDefault(
+                    size = 5,
+                    sort = "orderDate", direction = Sort.Direction.DESC
+            ) Pageable pageable
     ) {
-        return orderService.getAllOrders(authentication.getName(), pageable);
+        return orderService.getAll(authentication.getName(), pageable);
     }
 
     @GetMapping("/{orderId}/items/{orderItemId}")
@@ -86,8 +90,8 @@ public class OrderController {
     @Operation(description = "Update order status")
     OrderResponseDto updateOrderStatus(
             @PathVariable @Positive Long id,
-            @RequestBody @Valid OrderUpdateDto updateDto
+            @RequestBody @Valid UpdateOrderRequestDto updateDto
     ) {
-        return orderService.updateOrderStatus(id, updateDto);
+        return orderService.updateStatus(id, updateDto);
     }
 }

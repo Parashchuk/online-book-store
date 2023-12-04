@@ -6,6 +6,7 @@ import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.entity.book.Book;
 import bookstore.entity.category.Category;
+import bookstore.exception.DuplicateValueException;
 import bookstore.mapper.BookMapper;
 import bookstore.repository.BookRepository;
 import bookstore.repository.CategoryRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,12 @@ public class BookServiceImpl implements BookService {
     public BookResponseDto save(CreateBookRequestDto createBookRequestDto) {
         Book book = bookMapper.toModel(createBookRequestDto);
         setCategories(book, createBookRequestDto.categories());
-        return bookMapper.toDto(bookRepository.save(book));
+        try {
+            return bookMapper.toDto(bookRepository.save(book));
+        } catch (DataIntegrityViolationException exception) {
+            throw new DuplicateValueException("The isbn key already exists: "
+                    + createBookRequestDto.isbn());
+        }
     }
 
     @Override
@@ -43,7 +50,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponseDto findById(Long id) {
-        return bookRepository.findById(id)
+        return bookRepository.findBookById(id)
                 .map(bookMapper::toDto)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Book was not found with id: " + id)
@@ -61,13 +68,13 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookResponseDto updateById(Long id, UpdateBookRequestDto updateBookRequestDto) {
-        Book book = bookRepository.findById(id).orElseThrow(
+        Book book = bookRepository.findBookById(id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Book wasn't updated, because book with id: " + id + " doesn't exist"
                 )
         );
         setCategories(book, updateBookRequestDto.categories());
-        bookMapper.updateBook(updateBookRequestDto, book);
+        bookMapper.update(updateBookRequestDto, book);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
