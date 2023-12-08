@@ -8,13 +8,13 @@ import bookstore.dto.cart.UpdateCartItemRequestDto;
 public interface CartService {
     CartResponseDto addCartItem(CreateCartItemRequestDto addToCartDto, String username);
 
-    CartResponseDto getCart(String username);
+    CartResponseDto getByUsername(String username);
 
-    CartItemResponseDto updateCartItem(
+    CartItemResponseDto updateById(
             Long id,
             UpdateCartItemRequestDto updateCartItemRequestDto,
             String username
     );
 
-    void deleteCartItem(Long id, String username);
+    void deleteById(Long id, String username);
 }

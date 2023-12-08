@@ -1,13 +1,17 @@
 package bookstore.controller;
 
-import bookstore.dto.category.CategoryCreateDto;
+import bookstore.dto.book.BookResponseWithoutCategoriesDto;
 import bookstore.dto.category.CategoryResponseDto;
+import bookstore.dto.category.CreateCategoryRequestDto;
+import bookstore.service.BookService;
 import bookstore.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,12 +33,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class CategoryController {
     private final CategoryService categoryService;
+    private final BookService bookService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get list of all categories from DB")
-    public List<CategoryResponseDto> getAll(Pageable pageable) {
+    public List<CategoryResponseDto> getAll(
+            @ParameterObject Pageable pageable
+    ) {
         return categoryService.findAll(pageable);
     }
 
@@ -51,9 +58,9 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(description = "Create a new category")
     public CategoryResponseDto createCategory(
-            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+            @RequestBody @Valid CreateCategoryRequestDto createCategoryRequestDto
     ) {
-        return categoryService.save(categoryCreateDto);
+        return categoryService.save(createCategoryRequestDto);
     }
 
     @PutMapping("/{id}")
@@ -62,9 +69,9 @@ public class CategoryController {
     @Operation(description = "Update a category by its ID")
     public CategoryResponseDto updateCategoryById(
             @PathVariable @Positive Long id,
-            @RequestBody @Validated CategoryCreateDto categoryCreateDto
+            @RequestBody @Valid CreateCategoryRequestDto createCategoryRequestDto
     ) {
-        return categoryService.updateById(id, categoryCreateDto);
+        return categoryService.updateById(id, createCategoryRequestDto);
     }
 
     @DeleteMapping("/{id}")
@@ -73,5 +80,17 @@ public class CategoryController {
     @Operation(description = "Delete a category by its ID")
     public void deleteById(@PathVariable @Positive Long id) {
         categoryService.deleteById(id);
+    }
+
+    @RequestMapping("{categoryId}/books")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
+    @Operation(description = "Get list of all books by its categories from DB")
+    public List<BookResponseWithoutCategoriesDto> getBooksByCategoryId(
+            @PathVariable @Positive Long categoryId,
+            @ParameterObject Pageable pageable
+    ) {
+        return bookService.findAllByCategoryId(categoryId, pageable);
     }
 }

@@ -1,7 +1,6 @@
 package bookstore.controller;
 
 import bookstore.dto.book.BookResponseDto;
-import bookstore.dto.book.BookResponseWithoutCategoriesDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.book.UpdateBookRequestDto;
 import bookstore.service.BookService;
@@ -11,8 +10,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -46,19 +45,9 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get list of all books from DB")
-    public List<BookResponseDto> getAll(@PageableDefault Pageable pageable) {
+    public List<BookResponseDto> getAll(
+            @ParameterObject Pageable pageable) {
         return bookService.findAll(pageable);
-    }
-
-    @GetMapping("/{categoryId}/books")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER')")
-    @Operation(description = "Get list of all books by its categories from DB")
-    public List<BookResponseWithoutCategoriesDto> getBooksByCategoryId(
-            @PathVariable @Positive Long categoryId,
-            Pageable pageable
-    ) {
-        return bookService.findAllByCategoryId(categoryId, pageable);
     }
 
     @GetMapping("/{bookId}")

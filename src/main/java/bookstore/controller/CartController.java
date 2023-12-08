@@ -48,7 +48,7 @@ public class CartController {
     @PreAuthorize("hasRole('USER')")
     @Operation(description = "Get cart of an authorized user")
     CartResponseDto getAllCartItems(Authentication authentication) {
-        return cartService.getCart(authentication.getName());
+        return cartService.getByUsername(authentication.getName());
     }
 
     @PutMapping("/{cartItemId}")
@@ -60,7 +60,7 @@ public class CartController {
             @RequestBody @Valid UpdateCartItemRequestDto updateDto,
             Authentication authentication
     ) {
-        return cartService.updateCartItem(cartItemId, updateDto, authentication.getName());
+        return cartService.updateById(cartItemId, updateDto, authentication.getName());
     }
 
     @DeleteMapping("/{cartItemId}")
@@ -71,6 +71,6 @@ public class CartController {
             @PathVariable @Positive Long cartItemId,
             Authentication authentication
     ) {
-        cartService.deleteCartItem(cartItemId, authentication.getName());
+        cartService.deleteById(cartItemId, authentication.getName());
     }
 }

@@ -1,7 +1,7 @@
 package bookstore.service;
 
-import bookstore.dto.category.CategoryCreateDto;
 import bookstore.dto.category.CategoryResponseDto;
+import bookstore.dto.category.CreateCategoryRequestDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
@@ -10,9 +10,9 @@ public interface CategoryService {
 
     CategoryResponseDto getById(Long id);
 
-    CategoryResponseDto save(CategoryCreateDto categoryCreateDto);
+    CategoryResponseDto save(CreateCategoryRequestDto createCategoryRequestDto);
 
-    CategoryResponseDto updateById(Long id, CategoryCreateDto categoryCreateDto);
+    CategoryResponseDto updateById(Long id, CreateCategoryRequestDto createCategoryRequestDto);
 
     void deleteById(Long id);
 }
