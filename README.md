@@ -1,7 +1,7 @@
-<h1 align="center">
+<p align="center">
 <img src="./.github/assets/logo.png" width="100" alt="logo">
-<p>Book Store App</p>
-</h1>
+</p>
+<h1 align="center">Book Store App</h1>
 
 ---
 This handy and secure app allows users to make purchases online, and it has all the functionality you would need to successfully manage your book store. Admins can add new books to DB, all books have categories, so it is easy to filter and find them by category. Books that the user plans to buy are added to a shopping cart. Before accessing the app, as it has RESTful architecture the user should be authorized with login and password, and later on it's gonna work with JWT till it's expired. All users are divided into admins and users, providing them with certain rights in the app.
