@@ -12,6 +12,8 @@ import bookstore.repository.BookRepository;
 import bookstore.repository.CategoryRepository;
 import bookstore.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
